@@ -1,9 +1,15 @@
 package com.example.mohamed.tictactoe;
 
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,6 +18,8 @@ import android.widget.Toast;
 
 import com.example.mohamed.tictactoe.Game.PLAYMODE;
 
+import static java.lang.Thread.sleep;
+
 public class MainActivity extends AppCompatActivity {
     private LinearLayout mygameplaybuttons;
     private LinearLayout mturntap;
@@ -19,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
     private Game mGame;
     private ImageView ivTurn;
     private Button buttonchangeMode;
+    private ImageView ivgameresultdiag2;
+    private ImageView ivgameresultdiag1;
+    private ImageView ivgameresultcol;
+    private ImageView ivgameresultrow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
         mturntap = (LinearLayout) findViewById(R.id.turntap);
         mygameplaybuttons = (LinearLayout) findViewById(R.id.gameplaybuttons);
         ivTurn = (ImageView) findViewById(R.id.ivtype);
+        ivgameresultrow = (ImageView) findViewById(R.id.ivgameresultrow);
+        ivgameresultcol = (ImageView) findViewById(R.id.ivgameresultcol);
+        ivgameresultdiag1 = (ImageView) findViewById(R.id.ivgameresultdiag1);
+        ivgameresultdiag2 = (ImageView) findViewById(R.id.ivgameresultdiag2);
         buttonchangeMode = (Button) findViewById(R.id.buttonchangeplaymode);
         startGame();
         showGameState();
@@ -54,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startGame() {
+        //set line visibility to invisible
+        ivgameresultrow.setVisibility(View.INVISIBLE);
+        ivgameresultcol.setVisibility(View.INVISIBLE);
+        ivgameresultdiag1.setVisibility(View.INVISIBLE);
+        ivgameresultdiag2.setVisibility(View.INVISIBLE);
         //make the gameplaybuttons backgound null
         int n = mygameplaybuttons.getChildCount();
         for (int i = 0; i < n; i++) {
@@ -100,21 +121,70 @@ public class MainActivity extends AppCompatActivity {
         int[] result = mGame.checkEnd();
         if (mGame.gameendstate != Game.GAMEENDSTATE.RUNNING) {        //Game is finished
 
-            if(mGame.gameendstate!= Game.GAMEENDSTATE.DRAW) {          //draw line if any one WON the game
+            if (mGame.gameendstate != Game.GAMEENDSTATE.DRAW) {          //draw line if any one WON the game
                 for (int i = 0; i < 4; i++) {
-                    if (result[0] != -1) {
-                        //draw line
+                    if (result[i] != -1) {
+                        drawwinline(i, result[i]);
                     }
                 }
             }
             if (mGame.gameendstate == Game.GAMEENDSTATE.DRAW) {
-                Toast.makeText(this,"DRAW!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "DRAW!", Toast.LENGTH_SHORT).show();
             } else if (mGame.gameendstate == Game.GAMEENDSTATE.PLAYERONE) {
-                Toast.makeText(this,"PLAYER1 WON!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "PLAYER1 WON!", Toast.LENGTH_SHORT).show();
             } else if (mGame.gameendstate == Game.GAMEENDSTATE.PLAYERTWO) {
-                Toast.makeText(this,"PLAYER 2 WON!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "PLAYER 2 WON!", Toast.LENGTH_SHORT).show();
             }
-            startGame();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startGame();
+                }
+            }, 2000);
+        }
+    }
+
+    private void drawwinline(int i, int id) {
+        final float scale = this.getResources().getDisplayMetrics().density;
+        switch (i) {
+            case 0: {                       //draw line on the row num id
+                ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) ivgameresultrow.getLayoutParams();
+                int top;
+                if (id == 0) {
+                    top = 50;
+                } else if (id == 1) {
+                    top = 150;
+                } else {
+                    top = 250;
+                }
+                layoutParams.setMargins(0, (int) (scale * top + 0.5f), 0, 0);
+                ivgameresultrow.setVisibility(View.VISIBLE);
+                break;
+            }
+            case 1: {                      //draw line on col num id
+                ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) ivgameresultcol.getLayoutParams();
+                int start;
+                if (id == 0) {
+                    start = 50;
+                } else if (id == 1) {
+                    start = 160;
+                } else {
+                    start = 270;
+                }
+             //   layoutParams.setMarginStart((int) (scale * start + 0.5f));
+                layoutParams.setMargins((int) (scale * start + 0.5f),0, 0, 0);
+                ivgameresultcol.setVisibility(View.VISIBLE);
+                break;
+            }
+            case 2: {                   //draw diagonal line
+                ivgameresultdiag1.setVisibility(View.VISIBLE);
+                break;
+            }
+            case 3: {                    //draw diagonal line
+                ivgameresultdiag2.setVisibility(View.VISIBLE);
+                break;
+            }
         }
     }
 }

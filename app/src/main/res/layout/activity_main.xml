@@ -1,87 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    tools:context="com.example.mohamed.tictactoe.MainActivity"
+    android:baselineAligned="false"
     android:orientation="vertical"
-    android:baselineAligned="false">
+    tools:context="com.example.mohamed.tictactoe.MainActivity">
 
     <RadioGroup
         android:id="@+id/difficutytap"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintTop_toTopOf="parent"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <RadioButton
             android:id="@+id/checkBoxeasy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="8dp"
             android:button="@drawable/checkdif"
-            android:text=""
-            android:layout_gravity="center"/>
+            android:text="" />
 
         <ImageView
             android:id="@+id/imageeaesy"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginLeft="1dp"
-            android:src="@drawable/e"
-            android:layout_gravity="center"/>
+            android:src="@drawable/e" />
 
         <RadioButton
             android:id="@+id/checkBoxmed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:button="@drawable/checkdif"
             android:layout_gravity="center"
-            android:layout_marginLeft="8dp"/>
+            android:layout_marginLeft="8dp"
+            android:button="@drawable/checkdif" />
 
         <ImageView
             android:id="@+id/imagemed"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/m"
             android:layout_gravity="center"
-            android:layout_marginLeft="1dp"/>
+            android:layout_marginLeft="1dp"
+            android:src="@drawable/m" />
 
         <RadioButton
             android:id="@+id/checkBoxhard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:button="@drawable/checkdif"
             android:layout_gravity="center"
-            android:layout_marginLeft="8dp"/>
+            android:layout_marginLeft="8dp"
+            android:button="@drawable/checkdif" />
 
         <ImageView
             android:id="@+id/imagehard"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/h"
             android:layout_gravity="center"
-            android:layout_marginLeft="1dp"/>
+            android:layout_marginLeft="1dp"
+            android:src="@drawable/h" />
 
         <RadioButton
             android:id="@+id/checkBoxexpert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:button="@drawable/checkdif"
             android:layout_gravity="center"
-            android:layout_marginLeft="8dp"/>
+            android:layout_marginLeft="8dp"
+            android:button="@drawable/checkdif" />
 
         <ImageView
             android:id="@+id/imageexpert"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/p"
             android:layout_gravity="center"
-            android:layout_marginLeft="1dp" />
+            android:layout_marginLeft="1dp"
+            android:src="@drawable/p" />
 
     </RadioGroup>
 
@@ -89,15 +94,18 @@
         android:id="@+id/turntap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="64dp"
-        android:layout_marginStart="64dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/gameplaybuttons"
+        android:visibility="invisible"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/gameplayscreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="invisible">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -112,214 +120,271 @@
 
     </LinearLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/gameplaybuttons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/gameplayscreen"
+        android:layout_width="330dp"
+        android:layout_height="320dp"
         android:layout_gravity="center"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/difficutytap"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/difficutytap">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/ivgameresultrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_marginTop="50dp"
+            android:src="@drawable/cross_1x"
+            android:translationZ="1dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible"/>
 
-            <Button
-                android:id="@+id/button1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:onClick="newPlay"
-                android:tag="0"/>
+        <ImageView
+            android:id="@+id/ivgameresultcol"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="50dp"
+            android:src="@drawable/cross_2x"
+            android:translationZ="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="invisible"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/v2" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:onClick="newPlay"
-                android:tag="1"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/v1" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:onClick="newPlay"
-                android:tag="2"/>
-        </LinearLayout>
-
-        <LinearLayout
+        <ImageView
+            android:id="@+id/ivgameresultdiag1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/h1" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/hh" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/h3" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/hh" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/h2" />
-        </LinearLayout>
-
-        <LinearLayout
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/cross_3x"
+            android:translationZ="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible"/>
+        <ImageView
+            android:id="@+id/ivgameresultdiag2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:onClick="newPlay"
-                android:tag="3"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/v3" />
-
-            <Button
-                android:id="@+id/button5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:onClick="newPlay"
-                android:tag="4"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/v4" />
-
-            <Button
-                android:id="@+id/button6"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:onClick="newPlay"
-                android:tag="5"/>
-        </LinearLayout>
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/cross_4x"
+            android:translationZ="1dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible"/>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:id="@+id/gameplaybuttons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/h1" />
+            <LinearLayout
+                android:id="@+id/row0"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/hh" />
+                <Button
+                    android:id="@+id/button1"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:onClick="newPlay"
+                    android:tag="0" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/h3" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/v2" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/hh" />
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:onClick="newPlay"
+                    android:tag="1" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/h2" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/v1" />
+
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:onClick="newPlay"
+                    android:tag="2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0px"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/h1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/hh" />
+
+                <ImageView
+                    android:layout_width="0px"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/h3" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/hh" />
+
+                <ImageView
+                    android:layout_width="0px"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/h2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/row1"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:onClick="newPlay"
+                    android:tag="3" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/v3" />
+
+                <Button
+                    android:id="@+id/button5"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:onClick="newPlay"
+                    android:tag="4" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/v4" />
+
+                <Button
+                    android:id="@+id/button6"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:onClick="newPlay"
+                    android:tag="5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0px"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/h1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/hh" />
+
+                <ImageView
+                    android:layout_width="0px"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/h3" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/hh" />
+
+                <ImageView
+                    android:layout_width="0px"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/h2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/row2"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button7"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:onClick="newPlay"
+                    android:tag="6" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/v6" />
+
+                <Button
+                    android:id="@+id/button8"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:onClick="newPlay"
+                    android:tag="7" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/v5" />
+
+                <Button
+                    android:id="@+id/button9"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:onClick="newPlay"
+                    android:tag="8" />
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/button7"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:onClick="newPlay"
-                android:tag="6"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/v6" />
-
-            <Button
-                android:id="@+id/button8"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:onClick="newPlay"
-                android:tag="7"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/v5" />
-
-            <Button
-                android:id="@+id/button9"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:onClick="newPlay"
-                android:tag="8"/>
-        </LinearLayout>
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/gamestatelayout"
@@ -332,7 +397,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gameplaybuttons">
+        app:layout_constraintTop_toBottomOf="@id/gameplayscreen">
 
         <LinearLayout
             android:layout_width="0px"
@@ -412,7 +477,7 @@
             android:layout_height="32dp"
             android:layout_gravity="center"
             android:background="@drawable/oneplayer"
-            android:onClick="changeplaymode"/>
+            android:onClick="changeplaymode" />
     </FrameLayout>
 
     <FrameLayout
@@ -421,6 +486,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
