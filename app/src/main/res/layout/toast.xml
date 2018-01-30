@@ -1,0 +1,24 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toast_layout_root"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/toast_layout">
+
+    <ImageView android:id="@+id/toastimage"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:src="@drawable/oh"/>
+
+    <TextView android:id="@+id/toasttext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:textColor="#000000"
+        android:text="player has won!"/>
+
+</LinearLayout>

@@ -6,14 +6,18 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mohamed.tictactoe.Game.PLAYMODE;
@@ -31,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivgameresultdiag1;
     private ImageView ivgameresultcol;
     private ImageView ivgameresultrow;
-
+    ImageView toastimage;
+    TextView toasttext;
+    View toastlayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
         ivgameresultdiag1 = (ImageView) findViewById(R.id.ivgameresultdiag1);
         ivgameresultdiag2 = (ImageView) findViewById(R.id.ivgameresultdiag2);
         buttonchangeMode = (Button) findViewById(R.id.buttonchangeplaymode);
+        LayoutInflater inflater = getLayoutInflater();
+        toastlayout = inflater.inflate(R.layout.toast,
+                (ViewGroup) findViewById(R.id.toast_layout_root));
+
+        toastimage = (ImageView) toastlayout.findViewById(R.id.toastimage);
+        toasttext = (TextView) toastlayout.findViewById(R.id.toasttext);
         startGame();
         showGameState();
     }
@@ -128,23 +140,59 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+            String text="";
+            int imageid=0;
             if (mGame.gameendstate == Game.GAMEENDSTATE.DRAW) {
                 Toast.makeText(this, "DRAW!", Toast.LENGTH_SHORT).show();
+                if(mGame.mplaymode==PLAYMODE.ONEPLAYER){
+                    text="This game is Draw!";
+                    imageid=R.drawable.bg;
+                }else{
+                    text="This game is Draw!";
+                    imageid=0;
+                }
             } else if (mGame.gameendstate == Game.GAMEENDSTATE.PLAYERONE) {
-                Toast.makeText(this, "PLAYER1 WON!", Toast.LENGTH_SHORT).show();
+                if(mGame.mplaymode==PLAYMODE.ONEPLAYER){
+                    text="You have Won!";
+                    imageid=R.drawable.bg;
+                }else{
+                    text="Player Won This round!";
+                    imageid=R.drawable.ex;
+                }
             } else if (mGame.gameendstate == Game.GAMEENDSTATE.PLAYERTWO) {
-                Toast.makeText(this, "PLAYER 2 WON!", Toast.LENGTH_SHORT).show();
+                if(mGame.mplaymode==PLAYMODE.ONEPLAYER){
+                    text="You have Lose!";
+                    imageid=R.drawable.bg;
+                }else{
+                    text="Player Won This round!";
+                    imageid=R.drawable.oh;
+                }
             }
+            showToast(imageid,text);
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     startGame();
                 }
-            }, 2000);
+            }, 1000);
         }
     }
-
+    void showToast(int id,String s){
+        Drawable d;
+        if(id==0){
+            d=null;
+        }else{
+            d= ContextCompat.getDrawable(this,id);
+        }
+        toastimage.setImageDrawable(d);
+        toasttext.setText(s);
+        Toast toast = new Toast(this);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(toastlayout);
+        toast.show();
+    }
     private void drawwinline(int i, int id) {
         final float scale = this.getResources().getDisplayMetrics().density;
         switch (i) {
