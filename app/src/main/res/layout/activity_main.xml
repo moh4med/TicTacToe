@@ -411,13 +411,20 @@
                 android:layout_gravity="center"
                 android:background="@drawable/w1"
                 android:scaleType="fitCenter" />
-
-            <ImageView
+            <LinearLayout
+                android:id="@+id/lloscore"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:scaleType="fitCenter"
-                android:src="@drawable/co0" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+                <ImageView
+                    android:id="@+id/iv_owin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/co0" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -434,6 +441,7 @@
                 android:scaleType="fitCenter" />
 
             <ImageView
+                android:id="@+id/iv_xwin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -455,6 +463,7 @@
                 android:scaleType="fitCenter" />
 
             <ImageView
+                android:id="@+id/iv_draw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

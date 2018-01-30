@@ -2,9 +2,7 @@ package com.example.mohamed.tictactoe;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -35,9 +33,13 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivgameresultdiag1;
     private ImageView ivgameresultcol;
     private ImageView ivgameresultrow;
+    private ImageView iv_xwin;
+    private ImageView iv_owin;
+    private ImageView iv_draw;
     ImageView toastimage;
     TextView toasttext;
     View toastlayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
         ivgameresultcol = (ImageView) findViewById(R.id.ivgameresultcol);
         ivgameresultdiag1 = (ImageView) findViewById(R.id.ivgameresultdiag1);
         ivgameresultdiag2 = (ImageView) findViewById(R.id.ivgameresultdiag2);
+        iv_xwin = (ImageView) findViewById(R.id.iv_xwin);
+        iv_owin = (ImageView) findViewById(R.id.iv_owin);
+        iv_draw = (ImageView) findViewById(R.id.iv_draw);
         buttonchangeMode = (Button) findViewById(R.id.buttonchangeplaymode);
         LayoutInflater inflater = getLayoutInflater();
         toastlayout = inflater.inflate(R.layout.toast,
@@ -59,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         toastimage = (ImageView) toastlayout.findViewById(R.id.toastimage);
         toasttext = (TextView) toastlayout.findViewById(R.id.toasttext);
         startGame();
-        showGameState();
     }
 
     public void changeplaymode(View view) {
@@ -75,10 +79,31 @@ public class MainActivity extends AppCompatActivity {
         Drawable modeImage = mGame.getModeImage();
         buttonchangeMode.setBackground(modeImage);
         startGame();                        //start new game
-        showGameState();                   //show the result of the new game
     }
 
-    private void showGameState() {
+    private void SetGameState() {
+        int x,o,d;
+        if(mGame.mplaymode==PLAYMODE.ONEPLAYER){
+            x=mGame.userwin;
+            o=mGame.Androidwin;
+            d=mGame.singlemodedraw;
+        }else{
+            x=mGame.player1win;
+            o=mGame.player2win;
+            d=mGame.multimodedraw;
+        }
+        setnumberonImageView(x,iv_xwin);
+        setnumberonImageView(o,iv_owin);
+        setnumberonImageView(d,iv_draw);
+    }
+
+    private void setnumberonImageView(int x, ImageView view) {
+        //todo handle number>9
+        String name="co"+x;
+        final int resourceId = this.getResources().getIdentifier(name, "drawable",
+                this.getPackageName());
+        Drawable d = ContextCompat.getDrawable(this, resourceId);
+        view.setImageDrawable(d);
     }
 
     private void startGame() {
@@ -103,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
         }
         //change playerturn image
         mGame.Initialize();
+        //show the result of the new game
+        SetGameState();
     }
 
     public void newPlay(View view) {
@@ -112,8 +139,17 @@ public class MainActivity extends AppCompatActivity {
         if (canPlay) {
             Drawable playImage = mGame.getPlayImage();
             btn.setBackground(playImage);
+            playSound();
             changeGameTurn();
             checkFinished();
+        }
+    }
+
+    private void playSound() {
+        if (mGame.mplayerturn == Game.PLAYTURN.FIRST) {
+            mGame.mp1.start();
+        } else {
+            mGame.mp2.start();
         }
     }
 
@@ -132,7 +168,8 @@ public class MainActivity extends AppCompatActivity {
     void checkFinished() {
         int[] result = mGame.checkEnd();
         if (mGame.gameendstate != Game.GAMEENDSTATE.RUNNING) {        //Game is finished
-
+            //todo freeze the ui so can't deal with it until next start
+            mGame.mpend.start();
             if (mGame.gameendstate != Game.GAMEENDSTATE.DRAW) {          //draw line if any one WON the game
                 for (int i = 0; i < 4; i++) {
                     if (result[i] != -1) {
@@ -140,50 +177,58 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-            String text="";
-            int imageid=0;
+            String text = "";
+            int imageid = 0;
             if (mGame.gameendstate == Game.GAMEENDSTATE.DRAW) {
                 Toast.makeText(this, "DRAW!", Toast.LENGTH_SHORT).show();
-                if(mGame.mplaymode==PLAYMODE.ONEPLAYER){
-                    text="This game is Draw!";
-                    imageid=R.drawable.bg;
-                }else{
-                    text="This game is Draw!";
-                    imageid=0;
+                if (mGame.mplaymode == PLAYMODE.ONEPLAYER) {
+                    mGame.singlemodedraw++;
+                    text = "This game is Draw!";
+                    imageid = R.drawable.drawemoji;
+                } else {
+                    mGame.multimodedraw++;
+                    text = "This game is Draw!";
+                    imageid = R.drawable.drawemoji;
                 }
             } else if (mGame.gameendstate == Game.GAMEENDSTATE.PLAYERONE) {
-                if(mGame.mplaymode==PLAYMODE.ONEPLAYER){
-                    text="You have Won!";
-                    imageid=R.drawable.bg;
-                }else{
-                    text="Player Won This round!";
-                    imageid=R.drawable.ex;
+                if (mGame.mplaymode == PLAYMODE.ONEPLAYER) {
+                    mGame.userwin++;
+                    text = "You have Won!";
+                    imageid = R.drawable.winemoji;
+                } else {
+                    mGame.player1win++;
+                    text = "Player Won This round!";
+                    imageid = R.drawable.ex;
                 }
             } else if (mGame.gameendstate == Game.GAMEENDSTATE.PLAYERTWO) {
-                if(mGame.mplaymode==PLAYMODE.ONEPLAYER){
-                    text="You have Lose!";
-                    imageid=R.drawable.bg;
-                }else{
-                    text="Player Won This round!";
-                    imageid=R.drawable.oh;
+                if (mGame.mplaymode == PLAYMODE.ONEPLAYER) {
+                    mGame.Androidwin++;
+                    text = "You have Lose!";
+                    imageid = R.drawable.loseemoji;
+                } else {
+                    mGame.player2win++;
+                    text = "Player Won This round!";
+                    imageid = R.drawable.oh;
                 }
             }
-            showToast(imageid,text);
+            mygameplaybuttons.setEnabled(false);
+            showToast(imageid, text);
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     startGame();
                 }
-            }, 1000);
+            }, 1500);
         }
     }
-    void showToast(int id,String s){
+
+    void showToast(int id, String s) {
         Drawable d;
-        if(id==0){
-            d=null;
-        }else{
-            d= ContextCompat.getDrawable(this,id);
+        if (id == 0) {
+            d = null;
+        } else {
+            d = ContextCompat.getDrawable(this, id);
         }
         toastimage.setImageDrawable(d);
         toasttext.setText(s);
@@ -193,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
         toast.setView(toastlayout);
         toast.show();
     }
+
     private void drawwinline(int i, int id) {
         final float scale = this.getResources().getDisplayMetrics().density;
         switch (i) {
@@ -220,8 +266,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     start = 270;
                 }
-             //   layoutParams.setMarginStart((int) (scale * start + 0.5f));
-                layoutParams.setMargins((int) (scale * start + 0.5f),0, 0, 0);
+                //   layoutParams.setMarginStart((int) (scale * start + 0.5f));
+                layoutParams.setMargins((int) (scale * start + 0.5f), 0, 0, 0);
                 ivgameresultcol.setVisibility(View.VISIBLE);
                 break;
             }

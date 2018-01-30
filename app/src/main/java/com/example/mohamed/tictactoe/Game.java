@@ -2,6 +2,7 @@ package com.example.mohamed.tictactoe;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 
 import java.util.Arrays;
 
@@ -29,11 +30,29 @@ public class Game {
     public PLAYITEM[][] playmatrix;
     private Context mContext;
     public GAMEENDSTATE gameendstate;
+    final MediaPlayer mp1;
+    final MediaPlayer mp2;
+    final MediaPlayer mpend;
+    int player1win;
+    int player2win;
+    int singlemodedraw;
+    int userwin;
+    int Androidwin;
+    int multimodedraw;
     public Game(Context context) {
         mplaymode = PLAYMODE.ONEPLAYER;
         mplayerturn = PLAYTURN.FIRST;
         playmatrix = new PLAYITEM[3][3];
         mContext = context;
+        mp1=MediaPlayer.create(context, R.raw.soundc1);
+        mp2=MediaPlayer.create(context, R.raw.soundc2);
+        mpend=MediaPlayer.create(context, R.raw.soundend);
+        player1win=0;
+        player2win=0;
+        singlemodedraw =0;
+        userwin =0;
+        Androidwin=0;
+        multimodedraw =0;
         Initialize();
     }
 
@@ -159,17 +178,6 @@ public class Game {
             return true;
         }
         return false;
-    }
-    static class TowPlayerGame {
-        static int player1win;
-        static int player2win;
-        static int draw;
-    }
-
-    static class OnePlayerGame {
-        static int playerwin;
-        static int computerwin;
-        static int draw;
     }
 
 }
