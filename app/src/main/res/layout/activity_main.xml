@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="visible">
         <RadioButton
             android:id="@+id/checkBoxeasy"
             android:layout_width="wrap_content"
@@ -84,8 +85,35 @@
 
     </RadioGroup>
 
+    <LinearLayout
+        android:id="@+id/turntap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/gameplaybuttons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/turn" />
+
+        <ImageView
+            android:id="@+id/ivtype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/xp" />
+
+    </LinearLayout>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/numbersTable"
+        android:id="@+id/gameplaybuttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -95,7 +123,8 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/difficutytap">
+        app:layout_constraintTop_toBottomOf="@+id/difficutytap"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -108,7 +137,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@null" />
+                android:background="@null"
+                android:onClick="newPlay"
+                android:tag="0"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -120,7 +151,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@null" />
+                android:background="@null"
+                android:onClick="newPlay"
+                android:tag="1"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -132,7 +165,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@null" />
+                android:background="@null"
+                android:onClick="newPlay"
+                android:tag="2"/>
         </LinearLayout>
 
         <LinearLayout
@@ -177,7 +212,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@null" />
+                android:background="@null"
+                android:onClick="newPlay"
+                android:tag="3"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -189,7 +226,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@null" />
+                android:background="@null"
+                android:onClick="newPlay"
+                android:tag="4"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -201,7 +240,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@null" />
+                android:background="@null"
+                android:onClick="newPlay"
+                android:tag="5"/>
         </LinearLayout>
 
         <LinearLayout
@@ -246,7 +287,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@null" />
+                android:background="@null"
+                android:onClick="newPlay"
+                android:tag="6"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -258,7 +301,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@null" />
+                android:background="@null"
+                android:onClick="newPlay"
+                android:tag="7"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -270,7 +315,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@null" />
+                android:background="@null"
+                android:onClick="newPlay"
+                android:tag="8"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -285,7 +332,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/numbersTable">
+        app:layout_constraintTop_toBottomOf="@id/gameplaybuttons">
 
         <LinearLayout
             android:layout_width="0px"
@@ -364,7 +411,8 @@
             android:layout_width="116dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
-            android:background="@drawable/oneplayer" />
+            android:background="@drawable/oneplayer"
+            android:onClick="changeplaymode"/>
     </FrameLayout>
 
     <FrameLayout
