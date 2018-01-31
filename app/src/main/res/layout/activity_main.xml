@@ -24,13 +24,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
-            android:id="@+id/checkBoxeasy"
+            android:id="@+id/rbtneasy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="8dp"
             android:button="@drawable/checkdif"
-            android:text="" />
+            android:text=""
+            android:checked="true"/>
 
         <ImageView
             android:id="@+id/imageeaesy"
@@ -38,10 +39,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="1dp"
-            android:src="@drawable/e" />
+            android:src="@drawable/e"
+            android:onClick="changedifficultychoice"
+            android:tag="rbtneasy"/>
 
         <RadioButton
-            android:id="@+id/checkBoxmed"
+            android:id="@+id/rbtnmed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -54,10 +57,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="1dp"
-            android:src="@drawable/m" />
+            android:src="@drawable/m"
+            android:onClick="changedifficultychoice"
+            android:tag="rbtnmed"/>
 
         <RadioButton
-            android:id="@+id/checkBoxhard"
+            android:id="@+id/rbtnhard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -70,10 +75,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="1dp"
-            android:src="@drawable/h" />
+            android:src="@drawable/h"
+            android:onClick="changedifficultychoice"
+            android:tag="rbtnhard"/>
 
         <RadioButton
-            android:id="@+id/checkBoxexpert"
+            android:id="@+id/rbtnexpert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -86,7 +93,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="1dp"
-            android:src="@drawable/p" />
+            android:src="@drawable/p"
+            android:onClick="changedifficultychoice"
+            android:tag="rbtnexpert"/>
 
     </RadioGroup>
 
