@@ -189,7 +189,8 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         newAgentPlay();
                     }
-                }, 500);
+                }, 200);
+
             }
         }
     }

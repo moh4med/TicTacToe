@@ -14,7 +14,10 @@ public class Agent {
     int GAMEWINGFLAG = 10;
     int GAMELOSEFLAG = -10;
     int GAMEDRAWFLAG = 0;
-
+    int EASY_AI_LEVEL=1;
+    int MEDIUM_AI_LEVEL=2;
+    int HARD_AI_LEVEL=4;
+    int EXPERT_AI_LEVEL=10;
     Agent(Game game) {
         mGame = game;
     }
@@ -31,31 +34,48 @@ public class Agent {
         }
     }
 
+    private int easyplay() {
+        return findBestMode(EASY_AI_LEVEL);
+    }
+    private int mediumplay() {
+        return findBestMode(MEDIUM_AI_LEVEL);
+    }
+    private int hardplay() {
+        return findBestMode(HARD_AI_LEVEL);
+    }
     private int expertplay() {
-        return findBestMode();
+        return findBestMode(EXPERT_AI_LEVEL);
     }
 
-    private int findBestMode() {
+    private int findBestMode(int AI_LEVEL) {
         int best = -1000;
         int row = -1;
         int col = -1;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (canPlayVirtual(i, j)) {
-                    mGame.playmatrix[i][j] = Game.PLAYITEM.O;   //make move
-                    int val = minmax(0, false);   //find value
-                    mGame.playmatrix[i][j] = Game.PLAYITEM.NP;  //restore state
+        int id;
+        Random rand = new Random();
+        int chance = rand.nextInt(10);
+        if(chance>AI_LEVEL){
+            id=randomplay();
+            Log.e("AGENT","choose random"+id);
+        }else {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (canPlayVirtual(i, j)) {
+                        mGame.playmatrix[i][j] = Game.PLAYITEM.O;   //make move
+                        int val = minmax(0, false);   //find value
+                        mGame.playmatrix[i][j] = Game.PLAYITEM.NP;  //restore state
 
-                    if (val > best) {          //update new value
-                        best = val;
-                        row = i;
-                        col = j;
+                        if (val > best) {          //update new value
+                            best = val;
+                            row = i;
+                            col = j;
+                        }
                     }
                 }
             }
+            id = row * 3 + col;
+            Log.e("AGENT","row:"+row+" , col:"+col+" bestval:"+best);
         }
-        int id = row * 3 + col;
-        Log.e("AGENT","row:"+row+" , col:"+col+" bestval:"+best);
         return id;
     }
 
@@ -115,15 +135,9 @@ public class Agent {
         return GAMERUNNINGFLAG;       //draw or not finished
     }
 
-    private int hardplay() {
-        return -1;
-    }
 
-    private int mediumplay() {
-        return -1;
-    }
 
-    private int easyplay() {
+    private int randomplay() {
         Random rand = new Random();
         while (true) {
             int id = rand.nextInt(9);
