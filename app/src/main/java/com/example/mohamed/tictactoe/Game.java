@@ -36,7 +36,7 @@ public class Game {
     public PLAYITEM[][] playmatrix;
     private Context mContext;
     public GAMEENDSTATE gameendstate;
-    public GAMEDIFFICULTY difficulty=GAMEDIFFICULTY.EASY;
+    public GAMEDIFFICULTY difficulty = GAMEDIFFICULTY.EASY;
     final MediaPlayer mp1;
     final MediaPlayer mp2;
     final MediaPlayer mpend;
@@ -106,66 +106,68 @@ public class Game {
         return d;
     }
 
-    public boolean play(int id,boolean user) {
+    public void  play(int id) {
         int n = id / 3;
         int m = id % 3;
-        if (canPlay(n, m,user)) {
-            if (mplayerturn == PLAYTURN.FIRST) {
-                playmatrix[n][m] = PLAYITEM.X;
-            } else {
-                playmatrix[n][m] = PLAYITEM.O;
-            }
-            return true;
+        if (mplayerturn == PLAYTURN.FIRST) {
+            playmatrix[n][m] = PLAYITEM.X;
         } else {
-            return false;
+            playmatrix[n][m] = PLAYITEM.O;
         }
     }
 
     //check if the game is finished
-    public int[] checkEnd() {
+    public class ENDSTATE{
         int row = -1;
         int col = -1;
         int diagonal1 = -1;
         int diagonal2 = -1;
-        int gamefinish = 1;
-        int playerwon = -1;
+        GAMEENDSTATE mgameendstate=GAMEENDSTATE.RUNNING;
+        ENDSTATE(){
+
+        }
+        int[] getResult(){
+            return new int[]{row,col,diagonal1,diagonal2};
+        }
+    }
+    public ENDSTATE checkEnd() {
+        ENDSTATE endstate=new ENDSTATE();
         for (int i = 0; i < 3; i++) {
             PLAYITEM flagrow = playmatrix[i][0];
             PLAYITEM flagcol = playmatrix[0][i];
             if (flagrow != PLAYITEM.NP && playmatrix[i][1] == flagrow && playmatrix[i][2] == flagrow) {
-                row = i;
+                endstate.row = i;
                 if (flagrow == PLAYITEM.X) {
-                    gameendstate = GAMEENDSTATE.PLAYERONE;
+                    endstate.mgameendstate = GAMEENDSTATE.PLAYERONE;
                 } else {
-                    gameendstate = GAMEENDSTATE.PLAYERTWO;
+                    endstate.mgameendstate = GAMEENDSTATE.PLAYERTWO;
                 }
             }
             if (flagcol != PLAYITEM.NP && playmatrix[1][i] == flagcol && playmatrix[2][i] == flagcol) {
-                col = i;
+                endstate.col = i;
                 if (flagcol == PLAYITEM.X) {
-                    gameendstate = GAMEENDSTATE.PLAYERONE;
+                    endstate.mgameendstate = GAMEENDSTATE.PLAYERONE;
                 } else {
-                    gameendstate = GAMEENDSTATE.PLAYERTWO;
+                    endstate.mgameendstate = GAMEENDSTATE.PLAYERTWO;
                 }
             }
         }
         if (playmatrix[0][0] != PLAYITEM.NP && playmatrix[0][0] == playmatrix[1][1] && playmatrix[1][1] == playmatrix[2][2]) {
-            diagonal1 = 1;
+            endstate.diagonal1 = 1;
             if (playmatrix[0][0] == PLAYITEM.X) {
-                gameendstate = GAMEENDSTATE.PLAYERONE;
+                endstate.mgameendstate = GAMEENDSTATE.PLAYERONE;
             } else {
-                gameendstate = GAMEENDSTATE.PLAYERTWO;
+                endstate.mgameendstate = GAMEENDSTATE.PLAYERTWO;
             }
         }
         if (playmatrix[2][0] != PLAYITEM.NP && playmatrix[2][0] == playmatrix[1][1] && playmatrix[1][1] == playmatrix[0][2]) {
-            diagonal2 = 1;
+            endstate.diagonal2 = 1;
             if (playmatrix[2][0] == PLAYITEM.X) {
-                gameendstate = GAMEENDSTATE.PLAYERONE;
+                endstate.mgameendstate = GAMEENDSTATE.PLAYERONE;
             } else {
-                gameendstate = GAMEENDSTATE.PLAYERTWO;
+                endstate.mgameendstate = GAMEENDSTATE.PLAYERTWO;
             }
         }
-        int[] result = {row, col, diagonal1, diagonal2};
         boolean full = true;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -174,25 +176,28 @@ public class Game {
                 }
             }
         }
-        if (gameendstate == GAMEENDSTATE.RUNNING) {     // no one won
+        if (endstate.mgameendstate == GAMEENDSTATE.RUNNING) {     // no one won
             if (full) {
-                gameendstate = GAMEENDSTATE.DRAW;
+                endstate.mgameendstate = GAMEENDSTATE.DRAW;
             }
-            return null;
-        } else {
-            return result;
         }
+        return endstate;
     }
 
-    boolean canPlay(int n, int m, boolean user) {               //true if free block & 2 player| 1player on his turn
+    boolean canPlay(int id, boolean user) {               //true if free block & 2 player| 1player on his turn
+        int n = id / 3;
+        int m = id % 3;
+        return canPlay(n,m,user);
+    }
+    boolean canPlay(int n,int m,boolean user){
         if (gameendstate == GAMEENDSTATE.RUNNING && playmatrix[n][m] == PLAYITEM.NP) {
             if (mplaymode == PLAYMODE.TWOPLAYER) {
                 return true;
             } else if (mplayerturn == PLAYTURN.FIRST) {
                 return true;
-            } else if(!user) {              //android can androidPlay
+            } else if (!user) {              //android can androidPlay
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }

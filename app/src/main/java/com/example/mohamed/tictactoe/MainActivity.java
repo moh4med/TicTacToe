@@ -161,8 +161,9 @@ public class MainActivity extends AppCompatActivity {
     public void newPlay(View view) {
         Button btn = (Button) view;
         int id = Integer.parseInt(btn.getTag().toString());
-        boolean canPlay = mGame.play(id,true);
+        boolean canPlay = mGame.canPlay(id,true);
         if (canPlay) {
+            mGame.play(id);
             makePlay(btn);
         }
     }
@@ -188,13 +189,14 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         newAgentPlay();
                     }
-                }, 1500);
+                }, 500);
             }
         }
     }
     private void newAgentPlay() {
-        int id=androidAgent.androidPlay()+1;
-        String name="button"+id;
+        int id=androidAgent.androidPlay();
+        mGame.play(id);
+        String name="button"+(id+1);
         int resid = this.getResources().getIdentifier(name, "id", getPackageName());
         Button btn=(Button) findViewById(resid);
         makePlay(btn);
@@ -221,7 +223,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     boolean checkFinished() {
-        int[] result = mGame.checkEnd();
+        Game.ENDSTATE endstate = mGame.checkEnd();
+        int[] result =endstate.getResult();
+        mGame.gameendstate=endstate.mgameendstate;
         if (mGame.gameendstate != Game.GAMEENDSTATE.RUNNING) {        //Game is finished
             mGame.mpend.start();
             if (mGame.gameendstate != Game.GAMEENDSTATE.DRAW) {          //draw line if any one WON the game
