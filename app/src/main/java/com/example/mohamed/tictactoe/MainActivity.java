@@ -1,5 +1,6 @@
 package com.example.mohamed.tictactoe;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -40,7 +41,13 @@ public class MainActivity extends AppCompatActivity {
     TextView toasttext;
     View toastlayout;
     Agent androidAgent;
-
+    public static final String PREFS_NAME = "MyPrefsFile";
+    private String PLAYER1WINTAG="PLAYER1WINTAG";
+    private String PLAYER2WINTAG="PLAYER2WINTAG";
+    private String SINGLEMODEDRAWTAG="SINGLEMODEDRAWTAG";
+    private String ANDROIDWINTAG="ANDROIDWINTAG";
+    private String USERWINTAG="USERWINTAG";
+    private String MULTIMODEDRAWWINTAG="MULTIMODEDRAWWINTAG";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,10 +72,19 @@ public class MainActivity extends AppCompatActivity {
         toastimage = (ImageView) toastlayout.findViewById(R.id.toastimage);
         toasttext = (TextView) toastlayout.findViewById(R.id.toasttext);
         androidAgent = new Agent(mGame);
+        setupSharedData();
         setupGameDifficulty();
         startGame();
     }
-
+    void setupSharedData(){
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        mGame.player1win=settings.getInt(PLAYER1WINTAG,0);
+        mGame.player2win=settings.getInt(PLAYER2WINTAG,0);
+        mGame.singlemodedraw=settings.getInt(SINGLEMODEDRAWTAG,0);
+        mGame.userwin=settings.getInt(USERWINTAG,0);
+        mGame.Androidwin=settings.getInt(ANDROIDWINTAG,0);
+        mGame.multimodedraw=settings.getInt(MULTIMODEDRAWWINTAG,0);
+    }
     private void setupGameDifficulty() {
         mdifficultytap.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -323,6 +339,21 @@ public class MainActivity extends AppCompatActivity {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(toastlayout);
         toast.show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(PLAYER1WINTAG, mGame.player1win);
+        editor.putInt(PLAYER2WINTAG, mGame.player2win);
+        editor.putInt(SINGLEMODEDRAWTAG, mGame.singlemodedraw);
+        editor.putInt(USERWINTAG, mGame.userwin);
+        editor.putInt(ANDROIDWINTAG, mGame.Androidwin);
+        editor.putInt(MULTIMODEDRAWWINTAG, mGame.multimodedraw);
+        // Commit the edits!
+        editor.commit();
     }
 
     private void drawwinline(int i, int id) {

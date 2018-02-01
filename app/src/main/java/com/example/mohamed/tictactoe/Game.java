@@ -57,12 +57,6 @@ public class Game {
         mp2 = MediaPlayer.create(context, R.raw.soundc2);
         mpend = MediaPlayer.create(context, R.raw.soundend);
         mpchangemode = MediaPlayer.create(context, R.raw.soundcontrol);
-        player1win = 0;
-        player2win = 0;
-        singlemodedraw = 0;
-        userwin = 0;
-        Androidwin = 0;
-        multimodedraw = 0;
         Initialize();
     }
 
