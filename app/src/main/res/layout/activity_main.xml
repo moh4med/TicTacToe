@@ -448,14 +448,20 @@
                 android:layout_gravity="center"
                 android:background="@drawable/w2"
                 android:scaleType="fitCenter" />
-
-            <ImageView
-                android:id="@+id/iv_xwin"
+            <LinearLayout
+                android:id="@+id/llxscore"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:scaleType="fitCenter"
-                android:src="@drawable/co0" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+                <ImageView
+                    android:id="@+id/iv_xwin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/co0" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -470,14 +476,20 @@
                 android:layout_gravity="center"
                 android:background="@drawable/w3"
                 android:scaleType="fitCenter" />
-
-            <ImageView
-                android:id="@+id/iv_draw"
+            <LinearLayout
+                android:id="@+id/lldrawscore"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:scaleType="fitCenter"
-                android:src="@drawable/co0" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+                <ImageView
+                    android:id="@+id/iv_draw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/co0" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

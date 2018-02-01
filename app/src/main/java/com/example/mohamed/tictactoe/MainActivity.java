@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     TextView toasttext;
     View toastlayout;
     Agent androidAgent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         toastimage = (ImageView) toastlayout.findViewById(R.id.toastimage);
         toasttext = (TextView) toastlayout.findViewById(R.id.toasttext);
-        androidAgent=new Agent(mGame);
+        androidAgent = new Agent(mGame);
         setupGameDifficulty();
         startGame();
     }
@@ -72,18 +73,18 @@ public class MainActivity extends AppCompatActivity {
         mdifficultytap.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId==R.id.rbtneasy){
-                    Toast.makeText(getApplicationContext(),"EASY", Toast.LENGTH_SHORT).show();
-                    mGame.difficulty= Game.GAMEDIFFICULTY.EASY;
-                }else if(checkedId==R.id.rbtnmed){
-                    Toast.makeText(getApplicationContext(),"MEDIUM", Toast.LENGTH_SHORT).show();
-                    mGame.difficulty= Game.GAMEDIFFICULTY.MEDIUM;
-                }else if(checkedId==R.id.rbtnhard){
-                    Toast.makeText(getApplicationContext(),"HARD", Toast.LENGTH_SHORT).show();
-                    mGame.difficulty= Game.GAMEDIFFICULTY.HARD;
-                }else if(checkedId==R.id.rbtnexpert){
-                    Toast.makeText(getApplicationContext(),"EXPERT!", Toast.LENGTH_SHORT).show();
-                    mGame.difficulty= Game.GAMEDIFFICULTY.EXPERT;
+                if (checkedId == R.id.rbtneasy) {
+                    Toast.makeText(getApplicationContext(), "EASY", Toast.LENGTH_SHORT).show();
+                    mGame.difficulty = Game.GAMEDIFFICULTY.EASY;
+                } else if (checkedId == R.id.rbtnmed) {
+                    Toast.makeText(getApplicationContext(), "MEDIUM", Toast.LENGTH_SHORT).show();
+                    mGame.difficulty = Game.GAMEDIFFICULTY.MEDIUM;
+                } else if (checkedId == R.id.rbtnhard) {
+                    Toast.makeText(getApplicationContext(), "HARD", Toast.LENGTH_SHORT).show();
+                    mGame.difficulty = Game.GAMEDIFFICULTY.HARD;
+                } else if (checkedId == R.id.rbtnexpert) {
+                    Toast.makeText(getApplicationContext(), "EXPERT!", Toast.LENGTH_SHORT).show();
+                    mGame.difficulty = Game.GAMEDIFFICULTY.EXPERT;
                 }
                 mGame.mpchangemode.start();
                 startGame();
@@ -108,29 +109,56 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void SetGameState() {
-        int x,o,d;
-        if(mGame.mplaymode==PLAYMODE.ONEPLAYER){
-            x=mGame.userwin;
-            o=mGame.Androidwin;
-            d=mGame.singlemodedraw;
-        }else{
-            x=mGame.player1win;
-            o=mGame.player2win;
-            d=mGame.multimodedraw;
+        int x, o, d;
+        if (mGame.mplaymode == PLAYMODE.ONEPLAYER) {
+            x = mGame.userwin;
+            o = mGame.Androidwin;
+            d = mGame.singlemodedraw;
+        } else {
+            x = mGame.player1win;
+            o = mGame.player2win;
+            d = mGame.multimodedraw;
         }
-        setnumberonImageView(x,iv_xwin);
-        setnumberonImageView(o,iv_owin);
-        setnumberonImageView(d,iv_draw);
+
+        setnumberonImageView(x, iv_xwin);
+        setnumberonImageView(o, iv_owin);
+        setnumberonImageView(d, iv_draw);
     }
 
     private void setnumberonImageView(int x, ImageView view) {
-        //todo handle number>9
-        String name="co"+x;
-        final int resourceId = this.getResources().getIdentifier(name, "drawable",
-                this.getPackageName());
-        Drawable d = ContextCompat.getDrawable(this, resourceId);
-        view.setImageDrawable(d);
+        int dig = 0;
+        LinearLayout layout = (LinearLayout) view.getParent();
+        int totiv = layout.getChildCount();
+        int f;
+        String name;
+        int resourceId;
+        Drawable d;
+        while (x > 0||(x==0&&dig==0)) {
+            dig++;
+            //make new variable if no on exist
+            if (dig > totiv) {
+                view = new ImageView(this);
+                view.setLayoutParams(new android.view.ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                layout.addView(view, 0);
+            } else { //use previous one if exist
+                view = (ImageView) layout.getChildAt(totiv - dig);
+            }
+            f = x % 10;                 //set digit on the view
+            x /= 10;
+            name = "co" + f;
+            resourceId = this.getResources().getIdentifier(name, "drawable",
+                    this.getPackageName());
+            d = ContextCompat.getDrawable(this, resourceId);
+            view.setImageDrawable(d);
+            view.setVisibility(View.VISIBLE);
+        }
+        for (int i = 0; i < totiv - dig; i++) {
+            view = (ImageView) layout.getChildAt(i);
+            view.setVisibility(View.INVISIBLE);
+        }
+
     }
+
 
     private void startGame() {
         //set line visibility to invisible
@@ -161,28 +189,31 @@ public class MainActivity extends AppCompatActivity {
     public void newPlay(View view) {
         Button btn = (Button) view;
         int id = Integer.parseInt(btn.getTag().toString());
-        boolean canPlay = mGame.canPlay(id,true);
+        boolean canPlay = mGame.canPlay(id, true);
         if (canPlay) {
             mGame.play(id);
             makePlay(btn);
         }
     }
-    void makePlay(Button btn){
+
+    void makePlay(Button btn) {
         Drawable playImage = mGame.getPlayImage();
         btn.setBackground(playImage);
         playSound();
         changeGameTurn();
-        boolean end=checkFinished();
-        if(end){
+        boolean end = checkFinished();
+        if (end) {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startGame();
+                    if (mGame.gameendstate != Game.GAMEENDSTATE.RUNNING) {
+                        startGame();
+                    }
                 }
             }, 1500);
-        }else{
-            if(mGame.mplaymode==PLAYMODE.ONEPLAYER&&mGame.mplayerturn== Game.PLAYTURN.SECOND){        //check if in one player mode make the computer androidPlay
+        } else {
+            if (mGame.mplaymode == PLAYMODE.ONEPLAYER && mGame.mplayerturn == Game.PLAYTURN.SECOND) {        //check if in one player mode make the computer androidPlay
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -194,12 +225,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     private void newAgentPlay() {
-        int id=androidAgent.androidPlay();
+        int id = androidAgent.androidPlay();
         mGame.play(id);
-        String name="button"+(id+1);
+        id++;                   //for calling the right button name
+        String name = "button" + id;
         int resid = this.getResources().getIdentifier(name, "id", getPackageName());
-        Button btn=(Button) findViewById(resid);
+        Button btn = (Button) findViewById(resid);
         makePlay(btn);
     }
 
@@ -225,8 +258,8 @@ public class MainActivity extends AppCompatActivity {
 
     boolean checkFinished() {
         Game.ENDSTATE endstate = mGame.checkEnd();
-        int[] result =endstate.getResult();
-        mGame.gameendstate=endstate.mgameendstate;
+        int[] result = endstate.getResult();
+        mGame.gameendstate = endstate.mgameendstate;
         if (mGame.gameendstate != Game.GAMEENDSTATE.RUNNING) {        //Game is finished
             mGame.mpend.start();
             if (mGame.gameendstate != Game.GAMEENDSTATE.DRAW) {          //draw line if any one WON the game
@@ -271,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             showToast(imageid, text);
-           return true;
+            return true;
         }
         return false;
     }
@@ -336,9 +369,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changedifficultychoice(View view) {
-        String name=view.getTag().toString();
+        String name = view.getTag().toString();
         int resid = getResources().getIdentifier(name, "id", getPackageName());
-        RadioButton rbtn = (RadioButton)findViewById(resid);
+        RadioButton rbtn = (RadioButton) findViewById(resid);
         rbtn.setChecked(true);
     }
 }
